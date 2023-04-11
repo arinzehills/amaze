@@ -2,17 +2,25 @@ import 'dart:io';
 
 import 'package:amaze/components/download_alert.dart';
 import 'package:amaze/components/utilities_widgets/consts.dart';
-import 'package:amaze/database/download_helper.dart';
+import 'package:amaze/components/utilities_widgets/my_navigate.dart';
+
 import 'package:amaze/models/book_model.dart';
+import 'package:amaze/pages/Orders/order_succcess.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DiscoverProvider extends ChangeNotifier {
-  var dlDB = DownloadsDB();
-
   bool downloaded = false;
-
+  final _downloadBox = Hive.box('downloads');
+// @override
+//   void onInit() async {
+// checkDownload(book)
+//     super.onInit();
+//   }
   Future downloadFile(BuildContext context, BookModel book) async {
     PermissionStatus permission = await Permission.storage.status;
 
@@ -63,40 +71,55 @@ class DiscoverProvider extends ChangeNotifier {
       // When the download finishes, we then add the book
       // to our local database
       if (v != null) {
-        addDownload(book);
+        addDownload(book, context);
       }
     });
   }
 
-  addDownload(BookModel book) async {
-    await dlDB.removeAllWithId();
-    await dlDB.add(book.toJson());
-    checkDownload(book);
+  addDownload(BookModel book, context) async {
+    final downloadBox = await Hive.openBox('downloads');
+    final downloadItem = downloadBox.get(book.id);
+    if (downloadItem != null) {
+      // downloadBox.delete(book.id);
+      MyNavigate.navigatejustpush(OrderSuccess(), context);
+
+      return;
+    }
+    await downloadBox.put(book.id, book.toJson());
+    checkDownload(book, true);
+    MyNavigate.navigatejustpush(OrderSuccess(), context);
   }
 
   deleteDownload(BookModel book) async {
-    await dlDB.remove(book.toJson());
-  }
+    // print(book.filePath);
 
-  deleteAllDownloads() async {
-    await dlDB.removeAllDownloads();
+    final file = File(book.filePath!);
+    bool fileExist = await file.exists();
+    print(fileExist);
+    final downloadBox = await Hive.openBox('downloads');
+    downloadBox.delete(book.id);
   }
 
   // check if book has been downloaded before
-  checkDownload(BookModel book) async {
-    List downloads = await dlDB.check({'id': book.id});
-
-    if (downloads.isNotEmpty) {
-      // check if book has been deleted
-      String path = downloads[0]['filePath'];
-
+  checkDownload(BookModel book, bool isNew) async {
+    if (isNew) {
+      String path = book.filePath!;
       if (await File(path).exists()) {
         setDownloaded(true);
       } else {
         setDownloaded(false);
       }
     } else {
-      setDownloaded(false);
+      print('old run');
+
+      if (_downloadBox.containsKey(book.id)) {
+        print('old run with true');
+        setDownloaded(true);
+        print(downloaded);
+      } else {
+        print('old run with false');
+        setDownloaded(false);
+      }
     }
   }
 

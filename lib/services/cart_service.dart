@@ -12,7 +12,8 @@ class CartService extends GetxController {
   @override
   void onInit() async {
     _prefs = await SharedPreferences.getInstance();
-    setCartItems();
+    // _prefs.remove('cart');
+    // setCartItems();
     super.onInit();
   }
 
@@ -25,16 +26,13 @@ class CartService extends GetxController {
     print(_cartItems);
   }
 
-  List<BookModel> getCart() {
-    var cartStringList = _prefs.getStringList('cart') ?? [];
-    List<BookModel> cartBookList = cartStringList
-        .map((bookString) => BookModel.fromStringJson(bookString))
-        .toList();
+  getCart() {
+    // var cartStringList = _prefs.getStringList('cart') ?? [];
+    // List<BookModel> cartBookList = cartStringList
+    //     .map((bookString) => BookModel.fromStringJson(bookString))
+    //     .toList();
 
-    print('cartBookList');
-    print(cartBookList);
-    print(cartStringList);
-    return cartBookList;
+    // return cartBookList;
   }
 
   void addBook(BookModel cartItem) {
@@ -49,13 +47,6 @@ class CartService extends GetxController {
     } else {
       // _cartItems[cartItem] = 1;
       _prefs.remove('cart');
-
-      List<BookModel> cartList = getCart();
-      cartList.add(cartItem);
-      List<String> cartStringList =
-          cartList.map((book) => book.toStringJson()).toList();
-      _prefs.setStringList('cart', cartStringList);
-      update();
       Get.snackbar('Item added to cart',
           'You have added the ${cartItem.title} to the cart ',
           // "You have added a product with ${cartItem.courseType}",
@@ -101,21 +92,4 @@ class CartService extends GetxController {
         (value, element) => value + element,
       )
       .toString();
-
-  // static void purchaseCourse(cartItems, context) {
-  //   for (var i = 0; i < cartItems.length; i++) {
-  //     var order_id = generateRandomString(3) + DateTime.now().toIso8601String();
-  //     OrderInfo order = OrderInfo(
-  //         order_id: order_id,
-  //         user_id: cartItems[i].user_id,
-  //         current_user_id: user(context).id,
-  //         post_id: cartItems[i].post_id!,
-  //         orderType: cartItems[i].postType,
-  //         current_user_name: user(context).full_name!,
-  //         email: user(context).email,
-  //         title: cartItems[i].title,
-  //         price: cartItems[i].price);
-  //     AuthService().postData(order.toJson(), 'payment/orderItem');
-  //   }
-  // }
 }

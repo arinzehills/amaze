@@ -1,84 +1,41 @@
-import 'package:amaze/database/cart_db.dart';
-import 'package:amaze/models/book_info.dart';
+import 'package:amaze/models/book_model.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider with ChangeNotifier {
-  CartDB cartDB = CartDB();
-  int _counter = 0;
-  int _quantity = 1;
-  int get counter => _counter;
-  int get quantity => _quantity;
+  bool inCart = false;
 
-  double _totalPrice = 0.0;
-  double get totalPrice => _totalPrice;
+  final _cartBox = Hive.box('cart');
+  void addToCart(BookModel item) async {
+    final cartBox = await Hive.openBox('cart');
+    final cartItem = cartBox.get(item.id);
 
-  List<BookModel> cart = [];
+    if (cartItem != null) {
+      cartBox.delete(item.id);
+      isInCart(item);
+      return;
+      // item = BookModel(id: item.id, name: item.name, price: item.price,);
+    }
+    item.createdAt = DateTime.now().toString();
+    await cartBox.put(item.id, item.toJson());
+    isInCart(item);
+  }
 
-  Future<List<BookModel>> getData() async {
-    cart = await cartDB.getCartList();
+  isInCart(BookModel book) {
+    print(book.id);
+    if (_cartBox.containsKey(book.id)) {
+      return true;
+      // setIsInCart(true);
+    } else {
+      // setIsInCart(false);
+
+      return false;
+    }
+  }
+
+  setIsInCart(boolValue) {
+    inCart = boolValue;
     notifyListeners();
-    return cart;
-  }
-
-  void _setPrefsItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('cart_items', _counter);
-    prefs.setInt('item_quantity', _quantity);
-    prefs.setDouble('total_price', _totalPrice);
-    notifyListeners();
-  }
-
-  void _getPrefsItems() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _counter = prefs.getInt('cart_items') ?? 0;
-    _quantity = prefs.getInt('item_quantity') ?? 1;
-    _totalPrice = prefs.getDouble('total_price') ?? 0;
-  }
-
-  void addCounter() {
-    _counter++;
-    _setPrefsItems();
-    notifyListeners();
-  }
-
-  void removeCounter() {
-    _counter--;
-    _setPrefsItems();
-    notifyListeners();
-  }
-
-  int getCounter() {
-    _getPrefsItems();
-    return _counter;
-  }
-
-  void removeItem(int id) {
-    final index = cart.indexWhere((element) => element.id == id);
-    cart.removeAt(index);
-    _setPrefsItems();
-    notifyListeners();
-  }
-
-  int getQuantity(int quantity) {
-    _getPrefsItems();
-    return _quantity;
-  }
-
-  void addTotalPrice(double productPrice) {
-    _totalPrice = _totalPrice + productPrice;
-    _setPrefsItems();
-    notifyListeners();
-  }
-
-  void removeTotalPrice(double productPrice) {
-    _totalPrice = _totalPrice - productPrice;
-    _setPrefsItems();
-    notifyListeners();
-  }
-
-  double getTotalPrice() {
-    _getPrefsItems();
-    return _totalPrice;
   }
 }

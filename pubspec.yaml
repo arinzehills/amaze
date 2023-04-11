@@ -51,6 +51,9 @@ dependencies:
   vocsy_epub_viewer: ^2.0.0
   animated_text_kit: ^4.2.2
   sqflite: ^2.2.6
+  hive_flutter: ^1.1.0
+  audioplayers: ^3.0.1
+  hive: ^2.2.3
   permission_handler: ^10.2.0
 
 dev_dependencies:

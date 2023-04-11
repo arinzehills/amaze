@@ -3,6 +3,7 @@ import 'package:amaze/pages/Home/HomepageNavigation.dart';
 import 'package:amaze/auth_screens/Login.dart';
 import 'package:amaze/models/user.dart';
 import 'package:amaze/pages/Home/creators_navigation.dart';
+import 'package:amaze/providers/cart_provider.dart';
 import 'package:amaze/providers/discover_provider.dart';
 import 'package:amaze/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ class _WrapperState extends State<Wrapper> {
           ),
           ChangeNotifierProvider(
             create: (_) => DiscoverProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => CartProvider(),
           )
         ],
         child: Consumer<UserService>(

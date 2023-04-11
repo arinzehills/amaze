@@ -1,5 +1,7 @@
 PODS:
   - AEXML (4.6.0)
+  - audioplayers_darwin (0.0.1):
+    - Flutter
   - DKImagePickerController/Core (4.3.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -42,6 +44,9 @@ PODS:
     - DKImagePickerController/PhotoGallery
     - Flutter
   - Flutter (1.0.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - FontBlaster (5.1.1)
   - MenuItemKit (4.0.1)
   - path_provider_foundation (0.0.1):
@@ -60,6 +65,9 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
   - SSZipArchive (2.2.3)
   - SwiftyGif (5.4.3)
   - vocsy_epub_viewer (2.0.0):
@@ -68,11 +76,13 @@ PODS:
   - ZFDragableModalTransition (0.6)
 
 DEPENDENCIES:
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - vocsy_epub_viewer (from `.symlinks/plugins/vocsy_epub_viewer/ios`)
 
 SPEC REPOS:
@@ -81,6 +91,7 @@ SPEC REPOS:
     - DKImagePickerController
     - DKPhotoGallery
     - EpubViewerKit
+    - FMDB
     - FontBlaster
     - MenuItemKit
     - Realm
@@ -91,6 +102,8 @@ SPEC REPOS:
     - ZFDragableModalTransition
 
 EXTERNAL SOURCES:
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
@@ -101,16 +114,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
   vocsy_epub_viewer:
     :path: ".symlinks/plugins/vocsy_epub_viewer/ios"
 
 SPEC CHECKSUMS:
   AEXML: 2fbb73d8724797ed2cde888731e176fa4d44dd83
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EpubViewerKit: 5f6c8ff9161bba18d6742c59b3c575c19f0623a9
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   FontBlaster: 8897ebdbb4b6ace3ab78c92b665d88c954f19e4a
   MenuItemKit: 1459920e984d823e1bcc858b7a964f94e6bfa0f6
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
@@ -119,6 +136,7 @@ SPEC CHECKSUMS:
   RealmSwift: 5a35c1c35c3e1925e6fcd092c881d5cc4a826bff
   SDWebImage: e5cc87bf736e60f49592f307bdf9e157189298a3
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   vocsy_epub_viewer: 2dce338f2e0ca766f2db27525977456b10fc0612

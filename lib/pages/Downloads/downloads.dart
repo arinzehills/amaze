@@ -2,7 +2,6 @@ import 'package:amaze/components/custom_listtile.dart';
 import 'package:amaze/components/loading_widget.dart';
 import 'package:amaze/components/noitems_widget.dart';
 import 'package:amaze/components/utilities_widgets/my_navigate.dart';
-import 'package:amaze/database/download_helper.dart';
 import 'package:amaze/models/book_model.dart';
 import 'package:amaze/pages/Books/read_book.dart';
 import 'package:amaze/pages/Home/HomepageNavigation.dart';
@@ -10,6 +9,7 @@ import 'package:amaze/providers/discover_provider.dart';
 import 'package:amaze/services/download_service.dart';
 import 'package:amaze/services/upload_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocsy_epub_viewer/epub_viewer.dart';
@@ -22,62 +22,69 @@ class Downloads extends StatefulWidget {
 }
 
 class _DownloadsState extends State<Downloads> {
-  var db = DownloadsDB();
+  // var db = DownloadsDB();
+  late ValueNotifier<Object?> _downloads;
   List dls = [];
   static final uuid = Uuid();
 
   getDownloads() async {
-    List l = await db.listAll();
+    // List l = await db.listAll();
+    _downloads = Hive.box('downloads').listenable() as ValueNotifier<Object?>;
     setState(() {
-      dls.addAll(l);
+      // dls.addAll(l);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    getDownloads();
+    // getDownloads();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('dls');
-    print(dls);
-    return Consumer<DiscoverProvider>(
-        builder: (context, DiscoverProvider provider, child) {
-      return Container(
+    return ValueListenableBuilder(
+        valueListenable: Hive.box('downloads').listenable(),
+        builder: (context, box, child) {
+          //  final filteredList = query.isEmpty
+          // ? myList
+          // : myList.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
 
-          // return snapshot.data == null
-          //     ? LoadingWidget()
-          //     :
+          return Container(
 
-          child: dls.length == 0
-              ? NoItemsWidget(
-                  text: 'No downloads yet',
-                  clicked: () {
-                    MyNavigate.navigatejustpush(
-                        HomepageNavigation(
-                          index: 2,
-                        ),
-                        context);
-                  },
-                )
-              : _buildDownloads());
-    });
+              // return snapshot.data == null
+              //     ? LoadingWidget()
+              //     :
+
+              child: box.length == 0
+                  ? NoItemsWidget(
+                      text: 'No downloads yet',
+                      clicked: () {
+                        MyNavigate.navigatejustpush(
+                            HomepageNavigation(
+                              index: 2,
+                            ),
+                            context);
+                      },
+                    )
+                  : _buildDownloads(box));
+        });
   }
 
-  _buildDownloads() {
+  _buildDownloads(box) {
     return ListView.builder(
-      itemCount: dls.length,
+      itemCount: box.length,
       shrinkWrap: true,
       padding: EdgeInsets.only(top: 16),
       physics: ScrollPhysics(),
       itemBuilder: (context, index) {
-        Map<String, dynamic> dl = dls[index];
-        BookModel book = BookModel.fromJson(dl);
-        print(book.user_id);
-        print(book.user_id);
-        print(book.user_id);
+        // Map<String, dynamic> dl = dls[index];
+        // BookModel book = BookModel.fromJson(dl);
+        final bookJson = box.getAt(index);
+
+        Map<String, dynamic> myNewMap = Map<String, dynamic>.from(bookJson);
+        BookModel book = BookModel.fromJson(myNewMap);
+
         return Dismissible(
           key: ObjectKey(uuid.v4()),
           direction: DismissDirection.endToStart,

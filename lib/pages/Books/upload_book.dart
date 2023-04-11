@@ -221,14 +221,18 @@ class _UploadBookState extends State<UploadBook> {
   }
 
   Future selectAudio() async {
+    final docPath = (await getApplicationDocumentsDirectory()).path;
+
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp3', 'flac', 'mp4'],
     );
     if (result == null) return;
-    final path = result.files.single.path!;
-
-    setState(() => bookInfo.audio = File(path));
+    File file = File(result.files.single.path!);
+    if (Platform.isIOS) {
+      file = await file.copy('$docPath/${Path.basename(file.path)}');
+    }
+    setState(() => bookInfo.audio = file);
   }
 
   Future selectFile() async {

@@ -7,7 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class HomepageNavigation extends StatefulWidget {
-  const HomepageNavigation({super.key, this.index});
+  const HomepageNavigation({
+    super.key,
+    this.index,
+  });
   final int? index;
 
   @override
@@ -21,7 +24,7 @@ class _HomepageNavigationState extends State<HomepageNavigation> {
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Homepage(),
     Collections(),
     Discover(),

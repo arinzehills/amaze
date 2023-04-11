@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:amaze/custom_splash.dart';
+import 'package:amaze/models/book_info.dart';
 import 'package:amaze/models/user.dart';
+import 'package:amaze/pages/Home/HomepageNavigation.dart';
 import 'package:amaze/providers/auth_provider.dart';
+import 'package:amaze/providers/discover_provider.dart';
 import 'package:amaze/providers/theme_provider.dart';
 import 'package:amaze/services/auth_service.dart';
 import 'package:amaze/services/cart_service.dart';
@@ -8,9 +13,17 @@ import 'package:amaze/welcome_screen.dart';
 import 'package:amaze/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  await Hive.openBox('cart');
+  await Hive.openBox('downloads');
   runApp(
     const MyApp(),
   );
@@ -45,6 +58,12 @@ class _MyAppState extends State<MyApp> {
               routes: {
                 '/': (context) => CustomSplashScreen(),
                 '/main': (context) => Wrapper(),
+                '/discover': (context) => ChangeNotifierProvider(
+                      create: (context) => DiscoverProvider(),
+                      child: HomepageNavigation(
+                        index: 2,
+                      ),
+                    ),
               },
               darkTheme: ThemeData(
                 primaryColor: Colors.black,

@@ -2,8 +2,11 @@ import 'package:amaze/components/icon_container.dart';
 import 'package:amaze/components/my_button.dart';
 import 'package:amaze/components/utilities_widgets/my_navigate.dart';
 import 'package:amaze/constants/constants.dart';
+import 'package:amaze/pages/Discover/discover_detail.dart';
 import 'package:amaze/pages/Home/HomepageNavigation.dart';
+import 'package:amaze/providers/discover_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrderSuccess extends StatelessWidget {
   const OrderSuccess({super.key});
@@ -22,9 +25,16 @@ class OrderSuccess extends StatelessWidget {
               Container(
                 child: Column(
                   children: [
-                    IconContainer(
-                      icon: Icons.check,
-                      height: 70,
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                          color: myDarkBlue,
+                          borderRadius: BorderRadius.circular(150)),
+                      child: Icon(
+                        Icons.check_sharp,
+                        size: 90,
+                        color: white,
+                      ),
                     ),
                     SizedBox(
                       height: 20,
@@ -41,14 +51,23 @@ class OrderSuccess extends StatelessWidget {
                 margin: EdgeInsets.only(top: 140),
                 child: Column(
                   children: [
-                    Spacer(),
+                    // Spacer(),
                     MyButton(
                         placeHolder: 'Go to Home',
                         textColor: Colors.white,
                         color: myDarkBlue,
                         pressed: () {
-                          MyNavigate.navigatepushuntil(
-                              HomepageNavigation(), context);
+                          // MyNavigate.navigatepushuntil(
+                          //     HomepageNavigation(), context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ChangeNotifierProvider(
+                                create: (context) => DiscoverProvider(),
+                                child: HomepageNavigation(),
+                              ),
+                            ),
+                          );
                         })
                   ],
                 ),

@@ -4,7 +4,9 @@ import 'package:amaze/components/my_button.dart';
 import 'package:amaze/components/my_networkimage.dart';
 import 'package:amaze/components/searchfield.dart';
 import 'package:amaze/components/skeleton.dart';
+import 'package:amaze/components/utilities_widgets/get_audioname.dart';
 import 'package:amaze/components/utilities_widgets/my_navigate.dart';
+import 'package:amaze/components/utilities_widgets/url_to_readable.dart';
 import 'package:amaze/constants/constants.dart';
 import 'package:amaze/models/book_model.dart';
 import 'package:amaze/models/review_model.dart';
@@ -25,6 +27,12 @@ class DiscoverDetail extends StatefulWidget {
 }
 
 class _DiscoverDetailState extends State<DiscoverDetail> {
+  @override
+  void initState() {
+    DiscoverProvider().checkDownload(widget.book, false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var reviews = widget.book.reviews;
@@ -250,10 +258,12 @@ class _DiscoverDetailState extends State<DiscoverDetail> {
         color: myDarkBlue,
         pressed: () async {
           // setState(() => loading = true);
+          // print(UrlToReadable.urlToReadableURL(book.audioURL!, '.mp3'));
+          // print(GetAudioName.getAudioFromUrl(book.audioURL!));
+          // print(provider.downloaded);
           provider.downloaded
               ? openBook(provider)
-              // : provider.downloadFile(context, book);
-              : provider.deleteDownload(book);
+              : provider.downloadFile(context, book);
         });
   }
 

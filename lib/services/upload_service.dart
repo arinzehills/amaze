@@ -23,12 +23,15 @@ class UploadService {
     );
     var audiomultipart;
     if (bookInfo.audio != null) {
+      print('audio is there');
+      print(bookInfo.audio!.path);
       audiomultipart = await http.MultipartFile.fromPath(
         'audio',
         bookInfo.audio!.path,
       );
     }
-
+    print(request.headers['image']);
+    print(request.headers['audio']);
     request.headers['x-access-token'] = user.token!;
     request.fields['title'] = bookInfo.title;
     request.fields['subtitle'] = bookInfo.subtitle;
@@ -54,6 +57,9 @@ class UploadService {
     request.fields['createdAt'] = DateTime.now().toString();
     request.files.add(imagemultipart);
     request.files.add(filemultipart);
+    if (bookInfo.audio != null) {
+      request.files.add(audiomultipart);
+    }
     var streamedResponse = await request.send();
 
     var response = await http.Response.fromStream(streamedResponse);

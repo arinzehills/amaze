@@ -279,7 +279,7 @@ class _UploadBookInfoState extends State<UploadBookInfo> {
                   textColor: Colors.white,
                   loadingState: loading,
                   pressed: () async {
-                    // setState(() => loading = true);
+                    setState(() => loading = true);
                     if (_formKey.currentState!.validate()) {}
 
                     BookModel book = BookModel(
@@ -299,6 +299,7 @@ class _UploadBookInfoState extends State<UploadBookInfo> {
                     // print(body);
                     print(body['success']);
                     if (body['success']) {
+                      print('success');
                       snackBar(
                           CreatorsNavigation(
                             index: 1,
@@ -324,6 +325,7 @@ class _UploadBookInfoState extends State<UploadBookInfo> {
         children: [
           MyButton(
             placeHolder: 'I own my copy right',
+            loadingState: loading,
             pressed: () => {
               setState(() => {ownCopyright = !ownCopyright})
             },

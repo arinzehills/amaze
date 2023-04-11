@@ -1,0 +1,12 @@
+<svg id="Component_108_1" data-name="Component 108 – 1" xmlns="http://www.w3.org/2000/svg" width="35" height="49" viewBox="0 0 35 49">
+  <g id="Group_16913" data-name="Group 16913" transform="translate(1228 -1840)">
+    <g id="Group_16912" data-name="Group 16912" transform="translate(-1514 1598)">
+      <g id="Ellipse_1291" data-name="Ellipse 1291" transform="translate(286 242)" fill="#d1eefd" stroke="#1791e2" stroke-width="3">
+        <circle cx="17.5" cy="17.5" r="17.5" stroke="none"/>
+        <circle cx="17.5" cy="17.5" r="16" fill="none"/>
+      </g>
+      <path id="Polygon_1" data-name="Polygon 1" d="M8.083,3a2,2,0,0,1,3.464,0L17.9,14a2,2,0,0,1-1.732,3H3.464a2,2,0,0,1-1.732-3Z" transform="translate(314.5 249.685) rotate(90)" fill="#1791e2"/>
+    </g>
+  </g>
+  <text id="play" transform="translate(10 47)" fill="#1791e2" font-size="8" font-family="Helvetica"><tspan x="0" y="0">Play</tspan></text>
+</svg>

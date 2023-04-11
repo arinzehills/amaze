@@ -6,15 +6,24 @@ import 'package:amaze/components/utilities_widgets/my_navigate.dart';
 import 'package:amaze/constants/constants.dart';
 import 'package:amaze/models/user.dart';
 import 'package:amaze/pages/Books/upload_book.dart';
+import 'package:amaze/pages/Discover/discover.dart';
+import 'package:amaze/pages/Home/HomepageNavigation.dart';
 import 'package:amaze/pages/Profile/profile.dart';
+import 'package:amaze/providers/discover_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  String searchTerm = '';
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<User?>(
@@ -34,6 +43,27 @@ class Homepage extends StatelessWidget {
                   height: size(context).height * 0.22,
                   pagetitle: 'Brain world',
                   searchHint: 'Title, Genre or Author...',
+                  onChanged: (val) {
+                    setState(() {
+                      searchTerm = val;
+                    });
+                  },
+                  onClickSearch: () {
+                    Navigator.pushNamed(context, '/discover',
+                        arguments: {'query': searchTerm});
+
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (_) => ChangeNotifierProvider(
+                    //       create: (context) => DiscoverProvider(),
+                    //       child: HomepageNavigation(
+                    //         index: 2,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
+                  },
                   showSearchButton: true,
                   showPageTitle: false,
                   isCircular: false,

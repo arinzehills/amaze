@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amaze/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +13,7 @@ class MyCurveContainer extends StatefulWidget {
   Widget? title_widget;
   String? searchHint;
   String? searchString;
+  Function()? onClickSearch;
   Function(String)? onChanged;
   bool? showSearchButton;
   bool showPageTitle;
@@ -25,6 +28,7 @@ class MyCurveContainer extends StatefulWidget {
     this.searchHint,
     this.searchString,
     this.onChanged,
+    this.onClickSearch,
     required this.height,
     this.curvecontainerwidget2,
     this.showSearchButton,
@@ -116,11 +120,14 @@ class _MyCurveContainerState extends State<MyCurveContainer> {
                                     TextStyle(color: const Color(0xff626262)),
                                 filled: true,
                                 fillColor: const Color(0xfff7f7f7),
-                                suffixIcon: Container(
-                                  color: Color(0xff0BA7F2).withOpacity(0.25),
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.grey,
+                                suffixIcon: GestureDetector(
+                                  onTap: widget.onClickSearch,
+                                  child: Container(
+                                    color: Color(0xff0BA7F2).withOpacity(0.25),
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
